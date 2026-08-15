@@ -1,390 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+<script>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
-  <title>First Choice Containers</title>
+  var APP_URL =
+    "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec";
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  var appFrame = document.getElementById("appFrame");
+  var loading = document.getElementById("loading");
+  var errorScreen = document.getElementById("errorScreen");
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #fff;
-    }
+  var connectionTimer = null;
+  var appLoaded = false;
 
-    body {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100dvh;
-    }
 
-    /* =========================
-       LOADING SCREEN
-       ========================= */
+  /* =========================
+     GOOGLE APP READY
+     ========================= */
 
-    #loading {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+  window.addEventListener("message", function(event) {
 
-      background: #fff;
+    if (event.data === "FIRST_CHOICE_APP_READY") {
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      z-index: 999999;
-
-      font-family: Arial, sans-serif;
-
-      transition: opacity 0.4s ease;
-    }
-
-    #loading.hide {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .loading-content {
-      text-align: center;
-    }
-
-    .company {
-      font-size: 23px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .first-choice {
-      color: #0B1F4D;
-    }
-
-    .containers {
-      color: #D71920;
-    }
-
-    .loading-text {
-      margin-top: 9px;
-      font-size: 13px;
-      color: #777;
-    }
-
-    /* =========================
-       CONNECTION PROBLEM
-       ========================= */
-
-    #errorScreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      background: #fff;
-
-      display: none;
-      align-items: center;
-      justify-content: center;
-
-      z-index: 1000000;
-
-      font-family: Arial, sans-serif;
-    }
-
-    .error-content {
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-    }
-
-    .error-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: #0B1F4D;
-      margin-bottom: 10px;
-    }
-
-    .error-message {
-      font-size: 14px;
-      line-height: 1.5;
-      color: #666;
-      margin-bottom: 22px;
-    }
-
-    .retry-button {
-      border: 0;
-      border-radius: 7px;
-
-      padding: 11px 28px;
-
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-
-      color: #fff;
-      background: #0B1F4D;
-
-      cursor: pointer;
-
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .retry-button:active {
-      transform: scale(0.97);
-    }
-
-    /* =========================
-       APPLICATION
-       ========================= */
-
-    .app-container {
-      width: 100%;
-      height: 100dvh;
-      overflow: hidden;
-      position: relative;
-    }
-
-    iframe {
-      display: block;
-
-      width: 100%;
-      height: 100%;
-      min-height: 100%;
-
-      border: 0;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* =========================
-       MOBILE
-       ========================= */
-
-    @media (max-width: 768px) {
-
-      iframe {
-        width: 105.3%;
-        height: 105.3%;
-        min-height: 105.3%;
-
-        transform: scale(0.95);
-        transform-origin: top left;
-      }
-
-      .company {
-        font-size: 20px;
-      }
-
-      .loading-text {
-        font-size: 12px;
-      }
-
-      .error-title {
-        font-size: 20px;
-      }
-
-      .error-message {
-        font-size: 13px;
-      }
-    }
-
-    /* =========================
-       SMALL PHONES
-       ========================= */
-
-    @media (max-width: 480px) {
-
-      iframe {
-        width: 111.2%;
-        height: 111.2%;
-        min-height: 111.2%;
-
-        transform: scale(0.90);
-        transform-origin: top left;
-      }
-
-      .company {
-        font-size: 18px;
-      }
-
-      .loading-text {
-        font-size: 11px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- LOADING SCREEN -->
-
-  <div id="loading">
-
-    <div class="loading-content">
-
-      <div class="company">
-        <span class="first-choice">First Choice</span>
-        <span class="containers">Containers</span>
-      </div>
-
-      <div class="loading-text">
-        Loading Quote Builder...
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- CONNECTION PROBLEM -->
-
-  <div id="errorScreen">
-
-    <div class="error-content">
-
-      <div class="error-title">
-        Connection Problem
-      </div>
-
-      <div class="error-message">
-        We couldn't connect to Quote Builder.<br>
-        Please check your internet connection and try again.
-      </div>
-
-      <button
-        type="button"
-        class="retry-button"
-        onclick="retryApp()">
-        Retry
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- APPLICATION -->
-
-  <div class="app-container">
-
-    <iframe
-      id="appFrame"
-      src="https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec"
-      allow="clipboard-write"
-      title="First Choice Containers"
-      loading="eager">
-    </iframe>
-
-  </div>
-
-
-  <script>
-
-    var appFrame = document.getElementById("appFrame");
-    var loading = document.getElementById("loading");
-    var errorScreen = document.getElementById("errorScreen");
-
-    var connectionTimer = null;
-    var appReady = false;
-
-
-    /* =========================
-       WAIT FOR REAL APP SIGNAL
-       ========================= */
-
-    window.addEventListener("message", function(event) {
-
-      if (event.data === "FIRST_CHOICE_APP_READY") {
-
-        appReady = true;
-
-        clearTimeout(connectionTimer);
-
-        loading.classList.add("hide");
-
-        setTimeout(function() {
-          loading.style.display = "none";
-        }, 400);
-      }
-
-    });
-
-
-    /* =========================
-       CONNECTION TIMEOUT
-       ========================= */
-
-    function startConnectionTimer() {
+      appLoaded = true;
 
       clearTimeout(connectionTimer);
 
-      connectionTimer = setTimeout(function() {
-
-        if (!appReady) {
-
-          /*
-            Hide Google's error page.
-          */
-
-          appFrame.style.display = "none";
-
-          loading.style.display = "none";
-
-          errorScreen.style.display = "flex";
-        }
-
-      }, 10000);
+      hideLoading();
     }
 
+  });
 
-    /* =========================
-       RETRY
-       ========================= */
 
-    function retryApp() {
+  /* =========================
+     IFRAME LOADED
+     ========================= */
 
-      appReady = false;
+  appFrame.addEventListener("load", function() {
 
-      clearTimeout(connectionTimer);
+    appLoaded = true;
 
+    clearTimeout(connectionTimer);
+
+    hideLoading();
+
+  });
+
+
+  /* =========================
+     HIDE LOADING
+     ========================= */
+
+  function hideLoading() {
+
+    if (errorScreen) {
       errorScreen.style.display = "none";
-
-      loading.style.display = "flex";
-      loading.classList.remove("hide");
-
-      appFrame.style.display = "block";
-
-      appFrame.src =
-        "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec?retry=" +
-        Date.now();
-
-      startConnectionTimer();
     }
 
+    loading.classList.add("hide");
 
-    /* =========================
-       START
-       ========================= */
+    setTimeout(function() {
+      loading.style.display = "none";
+    }, 400);
+
+  }
+
+
+  /* =========================
+     CONNECTION TIMEOUT
+     ========================= */
+
+  function startConnectionTimer() {
+
+    clearTimeout(connectionTimer);
+
+    connectionTimer = setTimeout(function() {
+
+      if (!appLoaded) {
+
+        appFrame.style.display = "none";
+
+        loading.style.display = "none";
+
+        errorScreen.style.display = "flex";
+
+      }
+
+    }, 20000);
+
+  }
+
+
+  /* =========================
+     RETRY
+     ========================= */
+
+  function retryApp() {
+
+    appLoaded = false;
+
+    clearTimeout(connectionTimer);
+
+    errorScreen.style.display = "none";
+
+    loading.style.display = "flex";
+    loading.classList.remove("hide");
+
+    appFrame.style.display = "block";
+
+    appFrame.src =
+      APP_URL + "?retry=" + Date.now();
 
     startConnectionTimer();
 
-  </script>
+  }
 
-</body>
-</html>
+
+  /* =========================
+     START
+     ========================= */
+
+  startConnectionTimer();
+
+</script>
