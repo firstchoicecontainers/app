@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <title>First Choice Containers App</title>
+  <title>First Choice Containers-App</title>
 
   <style>
     * {
@@ -55,6 +55,26 @@
     }
 
     /* =========================
+       VERSION TEXT
+       ========================= */
+
+    .version-text {
+      position: fixed;
+      right: 8px;
+      bottom: 5px;
+      z-index: 9999;
+
+      font-family: Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      color: #999;
+
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* =========================
        MOBILE
        Slightly zoomed out
        ========================= */
@@ -79,6 +99,12 @@
         transform: scale(0.95);
         transform-origin: top left;
       }
+
+      .version-text {
+        right: 6px;
+        bottom: 4px;
+        font-size: 8px;
+      }
     }
 
     /* =========================
@@ -95,6 +121,12 @@
         transform: scale(0.90);
         transform-origin: top left;
       }
+
+      .version-text {
+        right: 5px;
+        bottom: 3px;
+        font-size: 8px;
+      }
     }
   </style>
 </head>
@@ -109,6 +141,10 @@
       title="First Choice Containers-App"
       loading="eager">
     </iframe>
+
+    <div class="version-text">
+      First Choice Containers - Quote Builder v0.0.1
+    </div>
 
   </div>
 
