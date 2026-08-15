@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <title>First Choice Containers-App</title>
+  <title>First Choice Containers - Quote Builder</title>
 
   <style>
     * {
@@ -37,6 +37,10 @@
         env(safe-area-inset-left);
     }
 
+    /* =========================
+       APP CONTAINER
+       ========================= */
+
     .app-container {
       width: 100%;
       height: 100%;
@@ -52,6 +56,79 @@
       border: 0;
       margin: 0;
       padding: 0;
+    }
+
+    /* =========================
+       LOADING SCREEN
+       ========================= */
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      background: #ffffff;
+
+      transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-title {
+      margin: 0 0 8px 0;
+
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+
+      color: #222;
+      text-align: center;
+    }
+
+    .loading-subtitle {
+      margin: 0 0 22px 0;
+
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+
+      color: #777;
+      text-align: center;
+    }
+
+    /* Spinner */
+
+    .spinner {
+      width: 34px;
+      height: 34px;
+
+      border: 3px solid #e5e5e5;
+      border-top: 3px solid #333;
+
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     /* =========================
@@ -76,8 +153,24 @@
         width: 105.3%;
         height: 105.3%;
         min-height: 105.3%;
+
         transform: scale(0.95);
         transform-origin: top left;
+      }
+
+      .loading-title {
+        font-size: 18px;
+      }
+
+      .loading-subtitle {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+
+      .spinner {
+        width: 30px;
+        height: 30px;
+        border-width: 3px;
       }
     }
 
@@ -91,8 +184,13 @@
         width: 111.2%;
         height: 111.2%;
         min-height: 111.2%;
+
         transform: scale(0.90);
         transform-origin: top left;
+      }
+
+      .loading-title {
+        font-size: 17px;
       }
     }
   </style>
@@ -100,16 +198,74 @@
 
 <body>
 
+  <!-- =========================
+       LOADING SCREEN
+       ========================= -->
+
+  <div class="loading-screen" id="loadingScreen">
+
+    <h1 class="loading-title">
+      First Choice Containers
+    </h1>
+
+    <p class="loading-subtitle">
+      Loading Quote Builder...
+    </p>
+
+    <div class="spinner"></div>
+
+  </div>
+
+
+  <!-- =========================
+       APPLICATION
+       ========================= -->
+
   <div class="app-container">
 
     <iframe
+      id="appFrame"
       src="https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec"
       allow="clipboard-write"
-      title="First Choice Containers-App"
+      title="First Choice Containers - Quote Builder"
       loading="eager">
     </iframe>
 
   </div>
+
+
+  <script>
+
+    const iframe = document.getElementById("appFrame");
+    const loadingScreen = document.getElementById("loadingScreen");
+
+    /*
+      Hide loading screen when
+      Google Apps Script finishes loading.
+    */
+
+    iframe.addEventListener("load", function () {
+
+      setTimeout(function () {
+        loadingScreen.classList.add("hidden");
+      }, 300);
+
+    });
+
+
+    /*
+      Safety fallback.
+
+      If the iframe doesn't trigger the load
+      event for some reason, don't leave the
+      user stuck on the loading screen forever.
+    */
+
+    setTimeout(function () {
+      loadingScreen.classList.add("hidden");
+    }, 15000);
+
+  </script>
 
 </body>
 </html>
