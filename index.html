@@ -1,84 +1,207 @@
-<script>
-  var appFrame = document.getElementById("appFrame");
-  var loading = document.getElementById("loading");
-  var errorScreen = document.getElementById("errorScreen");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
 
-  var loaded = false;
-  var timer;
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
+  <title>First Choice Containers</title>
 
-  /* =========================
-     APP LOADED
-     ========================= */
-
-  appFrame.addEventListener("load", function () {
-
-    loaded = true;
-
-    clearTimeout(timer);
-
-    loading.classList.add("hide");
-
-    setTimeout(function () {
-      loading.style.display = "none";
-    }, 400);
-
-  });
-
-
-  /* =========================
-     FALLBACK ERROR
-     ========================= */
-
-  timer = setTimeout(function () {
-
-    if (!loaded) {
-
-      loading.style.display = "none";
-
-      appFrame.style.display = "none";
-
-      errorScreen.style.display = "flex";
-
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-  }, 30000);
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+    }
 
+    body {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
+    }
 
-  /* =========================
-     RETRY
-     ========================= */
+    /* =========================
+       LOADING SCREEN
+       ========================= */
 
-  function retryApp() {
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
 
-    loaded = false;
+      background: #fff;
 
-    clearTimeout(timer);
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    errorScreen.style.display = "none";
+      z-index: 999999;
 
-    appFrame.style.display = "block";
+      font-family: Arial, sans-serif;
 
-    loading.style.display = "flex";
-    loading.classList.remove("hide");
+      transition: opacity 0.4s ease;
+    }
 
-    appFrame.src =
-      "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec?retry=" +
-      Date.now();
+    #loading.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
 
-    timer = setTimeout(function () {
+    .loading-content {
+      text-align: center;
+    }
 
-      if (!loaded) {
+    .company {
+      font-size: 23px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
 
-        loading.style.display = "none";
+    .first-choice {
+      color: #0B1F4D;
+    }
 
-        appFrame.style.display = "none";
+    .containers {
+      color: #D71920;
+    }
 
-        errorScreen.style.display = "flex";
+    .loading-text {
+      margin-top: 9px;
+      font-size: 13px;
+      color: #777;
+    }
 
+    /* =========================
+       APP
+       ========================= */
+
+    .app-container {
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 768px) {
+
+      iframe {
+        width: 105.3%;
+        height: 105.3%;
+        min-height: 105.3%;
+
+        transform: scale(0.95);
+        transform-origin: top left;
       }
 
-    }, 30000);
+      .company {
+        font-size: 20px;
+      }
 
-  }
-</script>
+      .loading-text {
+        font-size: 12px;
+      }
+    }
+
+    /* =========================
+       SMALL PHONES
+       ========================= */
+
+    @media (max-width: 480px) {
+
+      iframe {
+        width: 111.2%;
+        height: 111.2%;
+        min-height: 111.2%;
+
+        transform: scale(0.90);
+        transform-origin: top left;
+      }
+
+      .company {
+        font-size: 18px;
+      }
+
+      .loading-text {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Loading screen -->
+  <div id="loading">
+
+    <div class="loading-content">
+
+      <div class="company">
+        <span class="first-choice">First Choice</span>
+        <span class="containers">Containers</span>
+      </div>
+
+      <div class="loading-text">
+        Loading Quote Builder...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Application -->
+  <div class="app-container">
+
+    <iframe
+      id="appFrame"
+      src="https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec"
+      allow="clipboard-write"
+      title="First Choice Containers">
+    </iframe>
+
+  </div>
+
+
+  <script>
+    var appFrame = document.getElementById("appFrame");
+    var loading = document.getElementById("loading");
+
+    appFrame.onload = function () {
+      loading.classList.add("hide");
+
+      setTimeout(function () {
+        loading.style.display = "none";
+      }, 400);
+    };
+  </script>
+
+</body>
+</html>
