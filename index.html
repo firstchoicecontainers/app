@@ -107,7 +107,9 @@
       var timeoutHandle = null;
 
       function onMessage(event) {
-        if (event.origin !== 'https://script.google.com') return;
+        // Apps Script serves the actual content from a sandbox/googleusercontent
+        // domain, not script.google.com itself - so we can't reliably check
+        // event.origin here. The message type check below is enough.
         if (event.data && event.data.type === 'fcc-app-ready') {
           readyReceived = true;
           clearTimeout(timeoutHandle);
