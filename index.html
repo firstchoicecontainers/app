@@ -38,11 +38,7 @@
 
     #loading {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-
+      inset: 0;
       background: #fff;
 
       display: flex;
@@ -86,7 +82,68 @@
     }
 
     /* =========================
-       APP
+       CONNECTION PROBLEM
+       ========================= */
+
+    #errorScreen {
+      position: fixed;
+      inset: 0;
+
+      background: #fff;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 1000000;
+
+      font-family: Arial, sans-serif;
+    }
+
+    .error-content {
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .error-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0B1F4D;
+      margin-bottom: 10px;
+    }
+
+    .error-message {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #666;
+      margin-bottom: 22px;
+    }
+
+    .retry-button {
+      border: 0;
+      border-radius: 7px;
+
+      padding: 11px 28px;
+
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+
+      color: #fff;
+      background: #0B1F4D;
+
+      cursor: pointer;
+
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .retry-button:active {
+      transform: scale(0.97);
+    }
+
+    /* =========================
+       APPLICATION
        ========================= */
 
     .app-container {
@@ -97,6 +154,7 @@
 
     iframe {
       display: block;
+
       width: 100%;
       height: 100%;
       min-height: 100%;
@@ -128,6 +186,14 @@
       .loading-text {
         font-size: 12px;
       }
+
+      .error-title {
+        font-size: 20px;
+      }
+
+      .error-message {
+        font-size: 13px;
+      }
     }
 
     /* =========================
@@ -158,7 +224,10 @@
 
 <body>
 
-  <!-- Loading screen -->
+  <!-- =========================
+       LOADING SCREEN
+       ========================= -->
+
   <div id="loading">
 
     <div class="loading-content">
@@ -177,30 +246,171 @@
   </div>
 
 
-  <!-- Application -->
+  <!-- =========================
+       CONNECTION PROBLEM SCREEN
+       ========================= -->
+
+  <div id="errorScreen">
+
+    <div class="error-content">
+
+      <div class="error-title">
+        Connection Problem
+      </div>
+
+      <div class="error-message">
+        We couldn't connect to Quote Builder.<br>
+        Please check your internet connection and try again.
+      </div>
+
+      <button
+        type="button"
+        class="retry-button"
+        onclick="retryApp()">
+        Retry
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       GOOGLE APPS SCRIPT APP
+       ========================= -->
+
   <div class="app-container">
 
     <iframe
       id="appFrame"
       src="https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec"
       allow="clipboard-write"
-      title="First Choice Containers">
+      title="First Choice Containers"
+      loading="eager">
     </iframe>
 
   </div>
 
 
   <script>
+
     var appFrame = document.getElementById("appFrame");
     var loading = document.getElementById("loading");
+    var errorScreen = document.getElementById("errorScreen");
+
+    var connectionTimer = null;
+    var appLoaded = false;
+
+
+    /* =========================
+       APPS SCRIPT LOADED
+       ========================= */
 
     appFrame.onload = function () {
-      loading.classList.add("hide");
+
+      appLoaded = true;
+
+      clearTimeout(connectionTimer);
+
+      /*
+        Give the iframe a short moment
+        to finish rendering.
+      */
 
       setTimeout(function () {
-        loading.style.display = "none";
-      }, 400);
+
+        loading.classList.add("hide");
+
+        setTimeout(function () {
+          loading.style.display = "none";
+        }, 400);
+
+      }, 500);
+
     };
+
+
+    /* =========================
+       START CONNECTION TIMER
+       ========================= */
+
+    function startConnectionTimer() {
+
+      clearTimeout(connectionTimer);
+
+      connectionTimer = setTimeout(function () {
+
+        if (!appLoaded) {
+
+          /*
+            Hide the Google iframe completely.
+            This prevents Google's error page
+            from being visible to the user.
+          */
+
+          appFrame.style.display = "none";
+
+          loading.style.display = "none";
+
+          errorScreen.style.display = "flex";
+        }
+
+      }, 10000);
+    }
+
+
+    /* =========================
+       RETRY
+       ========================= */
+
+    function retryApp() {
+
+      appLoaded = false;
+
+      clearTimeout(connectionTimer);
+
+      /*
+        Hide error screen.
+      */
+
+      errorScreen.style.display = "none";
+
+      /*
+        Show loading screen again.
+      */
+
+      loading.style.display = "flex";
+      loading.classList.remove("hide");
+
+      /*
+        Show iframe again.
+      */
+
+      appFrame.style.display = "block";
+
+      /*
+        Reload Apps Script with
+        a unique timestamp.
+      */
+
+      appFrame.src =
+        "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec?retry=" +
+        Date.now();
+
+      /*
+        Start timeout again.
+      */
+
+      startConnectionTimer();
+    }
+
+
+    /* =========================
+       START
+       ========================= */
+
+    startConnectionTimer();
+
   </script>
 
 </body>
