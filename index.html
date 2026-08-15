@@ -30,23 +30,69 @@
       inset: 0;
       width: 100%;
       height: 100dvh;
-
-      padding:
-        env(safe-area-inset-top)
-        env(safe-area-inset-right)
-        env(safe-area-inset-bottom)
-        env(safe-area-inset-left);
     }
 
     /* =========================
-       APP CONTAINER
+       LOADING SCREEN
+       ========================= */
+
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background: #fff;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 999999;
+
+      font-family: Arial, sans-serif;
+
+      transition: opacity 0.4s ease;
+    }
+
+    #loading.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-content {
+      text-align: center;
+    }
+
+    .company {
+      font-size: 23px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .first-choice {
+      color: #0B1F4D;
+    }
+
+    .containers {
+      color: #D71920;
+    }
+
+    .loading-text {
+      margin-top: 9px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    /* =========================
+       APP
        ========================= */
 
     .app-container {
       width: 100%;
-      height: 100%;
+      height: 100dvh;
       overflow: hidden;
-      position: relative;
     }
 
     iframe {
@@ -61,89 +107,10 @@
     }
 
     /* =========================
-       LOADING SCREEN
-       ========================= */
-
-    #loading {
-      position: fixed;
-      inset: 0;
-
-      width: 100%;
-      height: 100dvh;
-
-      background: #ffffff;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      z-index: 999999;
-
-      font-family: Arial, Helvetica, sans-serif;
-
-      opacity: 1;
-      visibility: visible;
-
-      transition:
-        opacity 0.4s ease,
-        visibility 0.4s ease;
-    }
-
-    #loading.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    /* =========================
-       COMPANY NAME
-       ========================= */
-
-    .company-name {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    .first-choice {
-      color: #0b1f4d;
-    }
-
-    .containers {
-      color: #d71920;
-    }
-
-    /* =========================
-       LOADING TEXT
-       ========================= */
-
-    .loading-text {
-      margin-top: 10px;
-
-      font-size: 13px;
-      font-weight: 400;
-
-      color: #777;
-
-      text-align: center;
-    }
-
-    /* =========================
        MOBILE
        ========================= */
 
     @media (max-width: 768px) {
-
-      body {
-        height: 100dvh;
-      }
-
-      .app-container {
-        width: 100%;
-        height: 100dvh;
-      }
 
       iframe {
         width: 105.3%;
@@ -154,8 +121,8 @@
         transform-origin: top left;
       }
 
-      .company-name {
-        font-size: 21px;
+      .company {
+        font-size: 20px;
       }
 
       .loading-text {
@@ -164,7 +131,7 @@
     }
 
     /* =========================
-       VERY SMALL PHONES
+       SMALL PHONES
        ========================= */
 
     @media (max-width: 480px) {
@@ -178,8 +145,8 @@
         transform-origin: top left;
       }
 
-      .company-name {
-        font-size: 19px;
+      .company {
+        font-size: 18px;
       }
 
       .loading-text {
@@ -191,15 +158,12 @@
 
 <body>
 
-  <!-- =========================
-       LOADING SCREEN
-       ========================= -->
-
+  <!-- Loading screen -->
   <div id="loading">
 
-    <div>
+    <div class="loading-content">
 
-      <div class="company-name">
+      <div class="company">
         <span class="first-choice">First Choice</span>
         <span class="containers">Containers</span>
       </div>
@@ -213,37 +177,29 @@
   </div>
 
 
-  <!-- =========================
-       APPLICATION
-       ========================= -->
-
+  <!-- Application -->
   <div class="app-container">
 
     <iframe
       id="appFrame"
       src="https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec"
       allow="clipboard-write"
-      title="First Choice Containers"
-      loading="eager">
+      title="First Choice Containers">
     </iframe>
 
   </div>
 
 
-  <!-- =========================
-       LOADING SCRIPT
-       ========================= -->
-
   <script>
-    var frame = document.getElementById("appFrame");
+    var appFrame = document.getElementById("appFrame");
     var loading = document.getElementById("loading");
 
-    frame.onload = function () {
+    appFrame.onload = function () {
+      loading.classList.add("hide");
 
       setTimeout(function () {
-        loading.classList.add("hidden");
+        loading.style.display = "none";
       }, 400);
-
     };
   </script>
 
