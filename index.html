@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <title>"First Choice Containers-App"</title>
+  <title>First Choice Containers-App</title>
 
   <style>
     * {
@@ -41,6 +41,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      position: relative;
     }
 
     iframe {
@@ -53,24 +54,46 @@
       padding: 0;
     }
 
-    /* Mobile */
+    /* =========================
+       MOBILE
+       Slightly zoomed out
+       ========================= */
+
     @media (max-width: 768px) {
+
       body {
         height: 100dvh;
+        overflow: hidden;
       }
 
-      .app-container,
-      iframe {
+      .app-container {
         width: 100%;
         height: 100dvh;
+        overflow: hidden;
+      }
+
+      iframe {
+        width: 105.3%;
+        height: 105.3%;
+        min-height: 105.3%;
+        transform: scale(0.95);
+        transform-origin: top left;
       }
     }
 
-    /* Very small phones */
+    /* =========================
+       VERY SMALL PHONES
+       More zoomed out
+       ========================= */
+
     @media (max-width: 480px) {
+
       iframe {
-        width: 100%;
-        height: 100dvh;
+        width: 111.2%;
+        height: 111.2%;
+        min-height: 111.2%;
+        transform: scale(0.90);
+        transform-origin: top left;
       }
     }
   </style>
@@ -79,12 +102,14 @@
 <body>
 
   <div class="app-container">
+
     <iframe
       src="https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec"
       allow="clipboard-write"
       title="First Choice Containers-App"
       loading="eager">
     </iframe>
+
   </div>
 
 </body>
