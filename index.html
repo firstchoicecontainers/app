@@ -27,7 +27,8 @@
 
     body {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100dvh;
     }
@@ -38,7 +39,11 @@
 
     #loading {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
       background: #fff;
 
       display: flex;
@@ -87,7 +92,10 @@
 
     #errorScreen {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
 
       background: #fff;
 
@@ -150,6 +158,7 @@
       width: 100%;
       height: 100dvh;
       overflow: hidden;
+      position: relative;
     }
 
     iframe {
@@ -224,9 +233,7 @@
 
 <body>
 
-  <!-- =========================
-       LOADING SCREEN
-       ========================= -->
+  <!-- LOADING SCREEN -->
 
   <div id="loading">
 
@@ -246,9 +253,7 @@
   </div>
 
 
-  <!-- =========================
-       CONNECTION PROBLEM SCREEN
-       ========================= -->
+  <!-- CONNECTION PROBLEM -->
 
   <div id="errorScreen">
 
@@ -275,9 +280,7 @@
   </div>
 
 
-  <!-- =========================
-       GOOGLE APPS SCRIPT APP
-       ========================= -->
+  <!-- GOOGLE APPS SCRIPT -->
 
   <div class="app-container">
 
@@ -302,20 +305,13 @@
     var appLoaded = false;
 
 
-    /* =========================
-       APPS SCRIPT LOADED
-       ========================= */
+    /* APP LOADED */
 
     appFrame.onload = function () {
 
       appLoaded = true;
 
       clearTimeout(connectionTimer);
-
-      /*
-        Give the iframe a short moment
-        to finish rendering.
-      */
 
       setTimeout(function () {
 
@@ -330,9 +326,7 @@
     };
 
 
-    /* =========================
-       START CONNECTION TIMER
-       ========================= */
+    /* CONNECTION TIMEOUT */
 
     function startConnectionTimer() {
 
@@ -342,12 +336,6 @@
 
         if (!appLoaded) {
 
-          /*
-            Hide the Google iframe completely.
-            This prevents Google's error page
-            from being visible to the user.
-          */
-
           appFrame.style.display = "none";
 
           loading.style.display = "none";
@@ -356,12 +344,11 @@
         }
 
       }, 10000);
+
     }
 
 
-    /* =========================
-       RETRY
-       ========================= */
+    /* RETRY */
 
     function retryApp() {
 
@@ -369,45 +356,23 @@
 
       clearTimeout(connectionTimer);
 
-      /*
-        Hide error screen.
-      */
-
       errorScreen.style.display = "none";
-
-      /*
-        Show loading screen again.
-      */
 
       loading.style.display = "flex";
       loading.classList.remove("hide");
 
-      /*
-        Show iframe again.
-      */
-
       appFrame.style.display = "block";
-
-      /*
-        Reload Apps Script with
-        a unique timestamp.
-      */
 
       appFrame.src =
         "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec?retry=" +
         Date.now();
 
-      /*
-        Start timeout again.
-      */
-
       startConnectionTimer();
+
     }
 
 
-    /* =========================
-       START
-       ========================= */
+    /* START */
 
     startConnectionTimer();
 
