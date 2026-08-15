@@ -9,15 +9,18 @@
   <title>First Choice Containers</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #06132f;
+      background: #ffffff;
     }
 
     body {
@@ -29,8 +32,7 @@
     }
 
     /* =========================================================
-       3D SHIPPING CONTAINER BACKGROUND
-       Visual only - wrapper functionality unchanged
+       WHITE CORPORATE BACKGROUND
        ========================================================= */
 
     .shipping-bg {
@@ -42,24 +44,24 @@
 
       background:
         radial-gradient(
-          circle at 75% 30%,
-          rgba(38, 91, 160, 0.35),
-          transparent 34%
+          circle at 75% 25%,
+          rgba(30, 85, 150, 0.08),
+          transparent 32%
         ),
         radial-gradient(
           circle at 15% 85%,
-          rgba(215, 25, 32, 0.12),
+          rgba(215, 25, 32, 0.035),
           transparent 28%
         ),
         linear-gradient(
           135deg,
-          #030c20 0%,
-          #071936 45%,
-          #0B1F4D 100%
+          #ffffff 0%,
+          #f7f9fc 48%,
+          #ffffff 100%
         );
     }
 
-    /* Soft atmospheric lighting */
+    /* Soft edge lighting */
     .shipping-bg::before {
       content: "";
       position: absolute;
@@ -68,12 +70,12 @@
       background:
         radial-gradient(
           ellipse at center,
-          transparent 25%,
-          rgba(0, 0, 0, 0.42) 100%
+          transparent 40%,
+          rgba(11, 31, 77, 0.055) 100%
         );
     }
 
-    /* Perspective floor */
+    /* Subtle perspective floor */
     .shipping-bg::after {
       content: "";
       position: absolute;
@@ -84,7 +86,7 @@
 
       height: 75%;
 
-      opacity: 0.16;
+      opacity: 0.08;
 
       transform:
         perspective(600px)
@@ -97,35 +99,35 @@
           90deg,
           transparent 0,
           transparent 79px,
-          rgba(100, 160, 220, 0.35) 80px
+          rgba(11, 31, 77, 0.20) 80px
         ),
         repeating-linear-gradient(
           0deg,
           transparent 0,
           transparent 79px,
-          rgba(100, 160, 220, 0.35) 80px
+          rgba(11, 31, 77, 0.20) 80px
         );
     }
 
-    /* Red accent glow */
+    /* Red corporate accent */
     .shipping-red-glow {
       position: absolute;
 
-      width: 400px;
-      height: 400px;
+      width: 420px;
+      height: 420px;
 
-      right: -200px;
-      top: 15%;
+      right: -220px;
+      top: 10%;
 
       border-radius: 50%;
 
-      background: rgba(215, 25, 32, 0.12);
+      background: rgba(215, 25, 32, 0.045);
 
       filter: blur(90px);
     }
 
     /* =========================================================
-       3D CONTAINER
+       3D SHIPPING CONTAINERS
        ========================================================= */
 
     .shipping-container {
@@ -134,30 +136,30 @@
       width: 420px;
       height: 170px;
 
-      border: 2px solid rgba(120, 170, 220, 0.28);
+      border: 1px solid rgba(11, 31, 77, 0.20);
 
       background:
         repeating-linear-gradient(
           90deg,
           transparent 0,
           transparent 27px,
-          rgba(140, 190, 235, 0.15) 28px,
-          rgba(140, 190, 235, 0.15) 30px
+          rgba(255, 255, 255, 0.11) 28px,
+          rgba(255, 255, 255, 0.11) 30px
         ),
         linear-gradient(
           135deg,
-          #12386f,
-          #071c42
+          #17457d,
+          #0B1F4D
         );
 
       box-shadow:
-        inset 0 0 35px rgba(0, 0, 0, 0.45),
-        0 35px 70px rgba(0, 0, 0, 0.45);
+        inset 0 0 35px rgba(0, 0, 0, 0.20),
+        0 25px 55px rgba(11, 31, 77, 0.18);
 
       transform-style: preserve-3d;
     }
 
-    /* Top highlight */
+    /* Container top highlight */
     .shipping-container::before {
       content: "";
 
@@ -173,7 +175,7 @@
         linear-gradient(
           90deg,
           transparent,
-          rgba(150, 200, 245, 0.5),
+          rgba(255, 255, 255, 0.55),
           transparent
         );
     }
@@ -188,20 +190,20 @@
       width: 92px;
       height: 100%;
 
-      border-left: 2px solid rgba(150, 195, 235, 0.25);
+      border-left: 2px solid rgba(255, 255, 255, 0.16);
 
       background:
         repeating-linear-gradient(
           90deg,
-          rgba(255,255,255,0.025) 0,
-          rgba(255,255,255,0.025) 8px,
+          rgba(255, 255, 255, 0.035) 0,
+          rgba(255, 255, 255, 0.035) 8px,
           transparent 9px,
           transparent 18px
         ),
         linear-gradient(
           90deg,
-          #0a2855,
-          #154276
+          #103664,
+          #1c5087
         );
     }
 
@@ -217,10 +219,10 @@
 
       width: 2px;
 
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.22);
     }
 
-    /* Container corner posts */
+    /* Corner posts */
     .shipping-corner {
       position: absolute;
 
@@ -232,9 +234,9 @@
       background:
         linear-gradient(
           90deg,
-          #061633,
-          #2b5d91,
-          #061633
+          #071832,
+          #4775a4,
+          #071832
         );
     }
 
@@ -244,21 +246,6 @@
 
     .shipping-corner.right {
       right: -6px;
-    }
-
-    /* Container identification */
-    .shipping-label {
-      position: absolute;
-
-      left: 30px;
-      top: 55px;
-
-      color: rgba(220, 235, 250, 0.25);
-
-      font-size: 15px;
-      font-weight: 800;
-
-      letter-spacing: 4px;
     }
 
     /* Far container */
@@ -271,7 +258,7 @@
         rotateY(28deg)
         rotateZ(3deg);
 
-      opacity: 0.28;
+      opacity: 0.16;
     }
 
     /* Main container */
@@ -284,7 +271,7 @@
         rotateY(-24deg)
         rotateZ(-2deg);
 
-      opacity: 0.42;
+      opacity: 0.20;
     }
 
     /* Bottom container */
@@ -297,11 +284,11 @@
         rotateY(20deg)
         rotateZ(-2deg);
 
-      opacity: 0.22;
+      opacity: 0.11;
     }
 
     /* =========================================================
-       Loading screen
+       LOADING SCREEN
        ========================================================= */
 
     #loading {
@@ -331,11 +318,11 @@
       text-align: center;
 
       text-shadow:
-        0 2px 20px rgba(0, 0, 0, 0.45);
+        0 2px 12px rgba(11, 31, 77, 0.10);
     }
 
     .first-choice {
-      color: #ffffff;
+      color: #0B1F4D;
     }
 
     .containers {
@@ -345,12 +332,12 @@
     .loading-text {
       margin-top: 9px;
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.65);
+      color: #6b7686;
       text-align: center;
     }
 
     /* =========================================================
-       Error screen
+       ERROR SCREEN
        ========================================================= */
 
     #errorScreen {
@@ -362,8 +349,8 @@
       background:
         linear-gradient(
           135deg,
-          rgba(6, 19, 47, 0.96),
-          rgba(11, 31, 77, 0.97)
+          rgba(247, 249, 252, 0.98),
+          rgba(255, 255, 255, 0.99)
         );
 
       z-index: 999998;
@@ -391,7 +378,7 @@
       height: 56px;
       border-radius: 50%;
 
-      background: rgba(215, 25, 32, 0.15);
+      background: #fef2f2;
 
       display: flex;
       align-items: center;
@@ -399,7 +386,7 @@
 
       margin: 0 auto 14px;
 
-      border: 1px solid rgba(215, 25, 32, 0.25);
+      border: 1px solid #f8d5d5;
     }
 
     .error-icon-wrap svg {
@@ -411,13 +398,13 @@
     .error-title {
       font-size: 19px;
       font-weight: 800;
-      color: #ffffff;
+      color: #0B1F4D;
       margin-bottom: 6px;
     }
 
     .error-subtitle {
       font-size: 13.5px;
-      color: rgba(255, 255, 255, 0.65);
+      color: #6b7686;
       margin-bottom: 26px;
       line-height: 1.5;
     }
@@ -435,13 +422,16 @@
       align-items: flex-start;
       gap: 14px;
 
-      background: rgba(255, 255, 255, 0.045);
+      background: #ffffff;
 
-      border: 1px solid rgba(255, 255, 255, 0.10);
+      border: 1px solid #e1e6ec;
 
       border-radius: 12px;
 
       padding: 14px 16px;
+
+      box-shadow:
+        0 5px 18px rgba(11, 31, 77, 0.055);
     }
 
     .step-num {
@@ -472,7 +462,7 @@
 
       border-radius: 8px;
 
-      background: rgba(255, 255, 255, 0.07);
+      background: #eaf1f8;
 
       display: flex;
       align-items: center;
@@ -482,7 +472,7 @@
     .step-icon svg {
       width: 18px;
       height: 18px;
-      color: #9fc5ee;
+      color: #0B1F4D;
     }
 
     .step-text {
@@ -492,18 +482,18 @@
     .step-title {
       font-size: 14.5px;
       font-weight: 700;
-      color: #ffffff;
+      color: #16202e;
       margin-bottom: 2px;
     }
 
     .step-detail {
       font-size: 12.5px;
-      color: rgba(255, 255, 255, 0.60);
+      color: #6b7686;
       line-height: 1.5;
     }
 
     .step-detail strong {
-      color: #ffffff;
+      color: #16202e;
     }
 
     .error-actions {
@@ -514,7 +504,7 @@
     }
 
     .error-btn {
-      background: #D71920;
+      background: #0B1F4D;
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -527,16 +517,16 @@
       cursor: pointer;
 
       box-shadow:
-        0 8px 20px rgba(215, 25, 32, 0.25);
+        0 7px 18px rgba(11, 31, 77, 0.18);
     }
 
     .error-btn.secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
+      background: #f0f0f0;
+      color: #0B1F4D;
     }
 
     /* =========================================================
-       App frame
+       APP FRAME
        ========================================================= */
 
     #appFrame {
@@ -558,7 +548,7 @@
     }
 
     /* =========================================================
-       Mobile
+       MOBILE
        ========================================================= */
 
     @media (max-width: 600px) {
@@ -597,7 +587,7 @@
 <body>
 
   <!-- =======================================================
-       3D SHIPPING CONTAINER BACKGROUND
+       WHITE 3D SHIPPING CONTAINER BACKGROUND
        ======================================================= -->
 
   <div class="shipping-bg">
@@ -605,52 +595,28 @@
     <div class="shipping-red-glow"></div>
 
     <div class="shipping-container one">
-
       <div class="shipping-corner left"></div>
       <div class="shipping-corner right"></div>
-
-      <div class="shipping-label">
-        FIRST CHOICE
-      </div>
-
       <div class="shipping-doors"></div>
-
     </div>
-
 
     <div class="shipping-container two">
-
       <div class="shipping-corner left"></div>
       <div class="shipping-corner right"></div>
-
-      <div class="shipping-label">
-        CONTAINERS
-      </div>
-
       <div class="shipping-doors"></div>
-
     </div>
 
-
     <div class="shipping-container three">
-
       <div class="shipping-corner left"></div>
       <div class="shipping-corner right"></div>
-
-      <div class="shipping-label">
-        FCC
-      </div>
-
       <div class="shipping-doors"></div>
-
     </div>
 
   </div>
 
 
   <!-- =======================================================
-       Loading screen
-       Original functionality preserved
+       LOADING SCREEN
        ======================================================= -->
 
   <div id="loading">
@@ -672,7 +638,7 @@
 
 
   <!-- =======================================================
-       Error screen
+       ERROR SCREEN
        ======================================================= -->
 
   <div id="errorScreen">
@@ -689,35 +655,27 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          <path
-            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
-          />
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
           <line x1="12" y1="9" x2="12" y2="13"/>
           <line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
 
       </div>
 
-
       <div class="error-title">
         Couldn't open Quote Builder
       </div>
 
-
       <div class="error-subtitle">
-        This usually happens when more than one Google account is signed in
-        on this browser. Try these in order:
+        This usually happens when more than one Google account is signed in on this browser. Try these in order:
       </div>
 
 
       <div class="step-list">
 
-        <!-- Step 1 -->
         <div class="step-card">
 
-          <div class="step-num">
-            1
-          </div>
+          <div class="step-num">1</div>
 
           <div class="step-icon">
 
@@ -753,12 +711,9 @@
         </div>
 
 
-        <!-- Step 2 -->
         <div class="step-card">
 
-          <div class="step-num">
-            2
-          </div>
+          <div class="step-num">2</div>
 
           <div class="step-icon">
 
@@ -772,10 +727,7 @@
             >
               <circle cx="12" cy="12" r="10"/>
               <line x1="2" y1="12" x2="22" y2="12"/>
-              <path
-                d="M12 2a15.3 15.3 0 0 1 0 20
-                   15.3 15.3 0 0 1 0-20z"
-              />
+              <path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z"/>
             </svg>
 
           </div>
@@ -797,12 +749,9 @@
         </div>
 
 
-        <!-- Step 3 -->
         <div class="step-card">
 
-          <div class="step-num">
-            3
-          </div>
+          <div class="step-num">3</div>
 
           <div class="step-icon">
 
@@ -815,7 +764,6 @@
               stroke-linejoin="round"
             >
               <rect x="3" y="3" width="18" height="18" rx="2"/>
-
               <circle
                 cx="8.5"
                 cy="8.5"
@@ -823,7 +771,6 @@
                 fill="currentColor"
                 stroke="none"
               />
-
               <circle
                 cx="15"
                 cy="7"
@@ -831,7 +778,6 @@
                 fill="currentColor"
                 stroke="none"
               />
-
               <circle
                 cx="17"
                 cy="13"
@@ -839,7 +785,6 @@
                 fill="currentColor"
                 stroke="none"
               />
-
               <circle
                 cx="9"
                 cy="16"
@@ -901,7 +846,6 @@
 
   <!-- =======================================================
        ORIGINAL JAVASCRIPT
-       DO NOT CHANGE
        ======================================================= -->
 
   <script>
