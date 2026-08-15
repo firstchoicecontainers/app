@@ -280,7 +280,7 @@
   </div>
 
 
-  <!-- GOOGLE APPS SCRIPT -->
+  <!-- APPLICATION -->
 
   <div class="app-container">
 
@@ -302,39 +302,46 @@
     var errorScreen = document.getElementById("errorScreen");
 
     var connectionTimer = null;
-    var appLoaded = false;
+    var appReady = false;
 
 
-    /* APP LOADED */
+    /* =========================
+       WAIT FOR REAL APP SIGNAL
+       ========================= */
 
-    appFrame.onload = function () {
+    window.addEventListener("message", function(event) {
 
-      appLoaded = true;
+      if (event.data === "FIRST_CHOICE_APP_READY") {
 
-      clearTimeout(connectionTimer);
+        appReady = true;
 
-      setTimeout(function () {
+        clearTimeout(connectionTimer);
 
         loading.classList.add("hide");
 
-        setTimeout(function () {
+        setTimeout(function() {
           loading.style.display = "none";
         }, 400);
+      }
 
-      }, 500);
-
-    };
+    });
 
 
-    /* CONNECTION TIMEOUT */
+    /* =========================
+       CONNECTION TIMEOUT
+       ========================= */
 
     function startConnectionTimer() {
 
       clearTimeout(connectionTimer);
 
-      connectionTimer = setTimeout(function () {
+      connectionTimer = setTimeout(function() {
 
-        if (!appLoaded) {
+        if (!appReady) {
+
+          /*
+            Hide Google's error page.
+          */
 
           appFrame.style.display = "none";
 
@@ -344,15 +351,16 @@
         }
 
       }, 10000);
-
     }
 
 
-    /* RETRY */
+    /* =========================
+       RETRY
+       ========================= */
 
     function retryApp() {
 
-      appLoaded = false;
+      appReady = false;
 
       clearTimeout(connectionTimer);
 
@@ -368,11 +376,12 @@
         Date.now();
 
       startConnectionTimer();
-
     }
 
 
-    /* START */
+    /* =========================
+       START
+       ========================= */
 
     startConnectionTimer();
 
