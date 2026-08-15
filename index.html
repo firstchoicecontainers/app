@@ -7,143 +7,902 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
   <title>First Choice Containers</title>
+
   <style>
     * { box-sizing: border-box; }
 
     html, body {
-      margin: 0; padding: 0; width: 100%; height: 100%;
-      overflow: hidden; background: #fff;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #06132f;
     }
+
     body {
-      position: fixed; inset: 0; width: 100%; height: 100dvh;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
       font-family: Arial, sans-serif;
     }
-    /* ---------- Loading screen ---------- */
+
+    /* =========================================================
+       3D SHIPPING CONTAINER BACKGROUND
+       Visual only - wrapper functionality unchanged
+       ========================================================= */
+
+    .shipping-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle at 75% 30%,
+          rgba(38, 91, 160, 0.35),
+          transparent 34%
+        ),
+        radial-gradient(
+          circle at 15% 85%,
+          rgba(215, 25, 32, 0.12),
+          transparent 28%
+        ),
+        linear-gradient(
+          135deg,
+          #030c20 0%,
+          #071936 45%,
+          #0B1F4D 100%
+        );
+    }
+
+    /* Soft atmospheric lighting */
+    .shipping-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background:
+        radial-gradient(
+          ellipse at center,
+          transparent 25%,
+          rgba(0, 0, 0, 0.42) 100%
+        );
+    }
+
+    /* Perspective floor */
+    .shipping-bg::after {
+      content: "";
+      position: absolute;
+
+      left: -25%;
+      right: -25%;
+      bottom: -40%;
+
+      height: 75%;
+
+      opacity: 0.16;
+
+      transform:
+        perspective(600px)
+        rotateX(60deg);
+
+      transform-origin: center top;
+
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 79px,
+          rgba(100, 160, 220, 0.35) 80px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent 0,
+          transparent 79px,
+          rgba(100, 160, 220, 0.35) 80px
+        );
+    }
+
+    /* Red accent glow */
+    .shipping-red-glow {
+      position: absolute;
+
+      width: 400px;
+      height: 400px;
+
+      right: -200px;
+      top: 15%;
+
+      border-radius: 50%;
+
+      background: rgba(215, 25, 32, 0.12);
+
+      filter: blur(90px);
+    }
+
+    /* =========================================================
+       3D CONTAINER
+       ========================================================= */
+
+    .shipping-container {
+      position: absolute;
+
+      width: 420px;
+      height: 170px;
+
+      border: 2px solid rgba(120, 170, 220, 0.28);
+
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 27px,
+          rgba(140, 190, 235, 0.15) 28px,
+          rgba(140, 190, 235, 0.15) 30px
+        ),
+        linear-gradient(
+          135deg,
+          #12386f,
+          #071c42
+        );
+
+      box-shadow:
+        inset 0 0 35px rgba(0, 0, 0, 0.45),
+        0 35px 70px rgba(0, 0, 0, 0.45);
+
+      transform-style: preserve-3d;
+    }
+
+    /* Top highlight */
+    .shipping-container::before {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      top: 0;
+
+      height: 3px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(150, 200, 245, 0.5),
+          transparent
+        );
+    }
+
+    /* Container doors */
+    .shipping-doors {
+      position: absolute;
+
+      right: 0;
+      top: 0;
+
+      width: 92px;
+      height: 100%;
+
+      border-left: 2px solid rgba(150, 195, 235, 0.25);
+
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.025) 0,
+          rgba(255,255,255,0.025) 8px,
+          transparent 9px,
+          transparent 18px
+        ),
+        linear-gradient(
+          90deg,
+          #0a2855,
+          #154276
+        );
+    }
+
+    /* Door centre seam */
+    .shipping-doors::after {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      bottom: 0;
+      left: 50%;
+
+      width: 2px;
+
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    /* Container corner posts */
+    .shipping-corner {
+      position: absolute;
+
+      top: -2px;
+
+      width: 10px;
+      height: calc(100% + 4px);
+
+      background:
+        linear-gradient(
+          90deg,
+          #061633,
+          #2b5d91,
+          #061633
+        );
+    }
+
+    .shipping-corner.left {
+      left: -6px;
+    }
+
+    .shipping-corner.right {
+      right: -6px;
+    }
+
+    /* Container identification */
+    .shipping-label {
+      position: absolute;
+
+      left: 30px;
+      top: 55px;
+
+      color: rgba(220, 235, 250, 0.25);
+
+      font-size: 15px;
+      font-weight: 800;
+
+      letter-spacing: 4px;
+    }
+
+    /* Far container */
+    .shipping-container.one {
+      left: -100px;
+      top: 12%;
+
+      transform:
+        scale(0.75)
+        rotateY(28deg)
+        rotateZ(3deg);
+
+      opacity: 0.28;
+    }
+
+    /* Main container */
+    .shipping-container.two {
+      right: -100px;
+      top: 30%;
+
+      transform:
+        scale(1.15)
+        rotateY(-24deg)
+        rotateZ(-2deg);
+
+      opacity: 0.42;
+    }
+
+    /* Bottom container */
+    .shipping-container.three {
+      left: 5%;
+      bottom: -60px;
+
+      transform:
+        scale(0.85)
+        rotateY(20deg)
+        rotateZ(-2deg);
+
+      opacity: 0.22;
+    }
+
+    /* =========================================================
+       Loading screen
+       ========================================================= */
+
     #loading {
-      position: fixed; inset: 0; background: #fff; z-index: 999999;
-      display: flex; align-items: center; justify-content: center;
+      position: fixed;
+      inset: 0;
+
+      background: transparent;
+
+      z-index: 999999;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       transition: opacity 0.3s ease;
     }
-    #loading.hide { opacity: 0; pointer-events: none; }
 
-    .company { font-size: 23px; font-weight: bold; white-space: nowrap; text-align: center; }
-    .first-choice { color: #0B1F4D; }
-    .containers { color: #D71920; }
-    .loading-text { margin-top: 9px; font-size: 13px; color: #777; text-align: center; }
+    #loading.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
 
-    /* ---------- Error screen ---------- */
+    .company {
+      font-size: 23px;
+      font-weight: bold;
+      white-space: nowrap;
+      text-align: center;
+
+      text-shadow:
+        0 2px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .first-choice {
+      color: #ffffff;
+    }
+
+    .containers {
+      color: #D71920;
+    }
+
+    .loading-text {
+      margin-top: 9px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      text-align: center;
+    }
+
+    /* =========================================================
+       Error screen
+       ========================================================= */
+
     #errorScreen {
-      display: none; position: fixed; inset: 0; background: #f7f9fb; z-index: 999998;
-      align-items: flex-start; justify-content: center; padding: 32px 20px;
+      display: none;
+
+      position: fixed;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(6, 19, 47, 0.96),
+          rgba(11, 31, 77, 0.97)
+        );
+
+      z-index: 999998;
+
+      align-items: flex-start;
+      justify-content: center;
+
+      padding: 32px 20px;
+
       overflow-y: auto;
     }
-    #errorScreen.show { display: flex; }
-    .error-card { max-width: 520px; width: 100%; text-align: center; }
-    .error-icon-wrap {
-      width: 56px; height: 56px; border-radius: 50%; background: #fef2f2;
-      display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;
-    }
-    .error-icon-wrap svg { width: 28px; height: 28px; color: #D71920; }
-    .error-title { font-size: 19px; font-weight: 800; color: #0B1F4D; margin-bottom: 6px; }
-    .error-subtitle { font-size: 13.5px; color: #6b7686; margin-bottom: 26px; line-height: 1.5; }
 
-    .step-list { display: flex; flex-direction: column; gap: 12px; text-align: left; margin-bottom: 22px; }
-    .step-card {
-      display: flex; align-items: flex-start; gap: 14px; background: #fff;
-      border: 1.5px solid #e1e6ec; border-radius: 12px; padding: 14px 16px;
+    #errorScreen.show {
+      display: flex;
     }
+
+    .error-card {
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .error-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+
+      background: rgba(215, 25, 32, 0.15);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin: 0 auto 14px;
+
+      border: 1px solid rgba(215, 25, 32, 0.25);
+    }
+
+    .error-icon-wrap svg {
+      width: 28px;
+      height: 28px;
+      color: #D71920;
+    }
+
+    .error-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .error-subtitle {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 26px;
+      line-height: 1.5;
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+      margin-bottom: 22px;
+    }
+
+    .step-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+
+      background: rgba(255, 255, 255, 0.045);
+
+      border: 1px solid rgba(255, 255, 255, 0.10);
+
+      border-radius: 12px;
+
+      padding: 14px 16px;
+    }
+
     .step-num {
-      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: #0B1F4D;
-      color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center;
+      flex-shrink: 0;
+
+      width: 30px;
+      height: 30px;
+
+      border-radius: 50%;
+
+      background: #0B1F4D;
+
+      color: #fff;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
+
     .step-icon {
-      flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px; background: #eaf1f8;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .step-icon svg { width: 18px; height: 18px; color: #0B1F4D; }
-    .step-text { min-width: 0; }
-    .step-title { font-size: 14.5px; font-weight: 700; color: #16202e; margin-bottom: 2px; }
-    .step-detail { font-size: 12.5px; color: #6b7686; line-height: 1.5; }
-    .step-detail strong { color: #16202e; }
+      flex-shrink: 0;
 
-    .error-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+      width: 34px;
+      height: 34px;
+
+      border-radius: 8px;
+
+      background: rgba(255, 255, 255, 0.07);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-icon svg {
+      width: 18px;
+      height: 18px;
+      color: #9fc5ee;
+    }
+
+    .step-text {
+      min-width: 0;
+    }
+
+    .step-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .step-detail {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.60);
+      line-height: 1.5;
+    }
+
+    .step-detail strong {
+      color: #ffffff;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     .error-btn {
-      background: #0B1F4D; color: #fff; border: none; border-radius: 8px;
-      padding: 13px 24px; font-size: 14px; font-weight: 700; cursor: pointer;
-    }
-    .error-btn.secondary { background: #f0f0f0; color: #0B1F4D; }
+      background: #D71920;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
 
-    /* ---------- App frame ---------- */
-    #appFrame {
-      display: none; width: 100%; height: 100%; border: 0; margin: 0; padding: 0;
+      padding: 13px 24px;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 20px rgba(215, 25, 32, 0.25);
     }
-    #appFrame.show { display: block; }
+
+    .error-btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    /* =========================================================
+       App frame
+       ========================================================= */
+
+    #appFrame {
+      display: none;
+
+      width: 100%;
+      height: 100%;
+
+      border: 0;
+      margin: 0;
+      padding: 0;
+
+      position: relative;
+      z-index: 20;
+    }
+
+    #appFrame.show {
+      display: block;
+    }
+
+    /* =========================================================
+       Mobile
+       ========================================================= */
+
+    @media (max-width: 600px) {
+
+      .shipping-container.one {
+        left: -190px;
+        top: 8%;
+      }
+
+      .shipping-container.two {
+        right: -220px;
+        top: 36%;
+      }
+
+      .shipping-container.three {
+        left: -100px;
+        bottom: 0;
+      }
+
+      .company {
+        font-size: 20px;
+      }
+
+      .step-card {
+        gap: 10px;
+        padding: 13px;
+      }
+
+      .step-icon {
+        display: none;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- =======================================================
+       3D SHIPPING CONTAINER BACKGROUND
+       ======================================================= -->
+
+  <div class="shipping-bg">
+
+    <div class="shipping-red-glow"></div>
+
+    <div class="shipping-container one">
+
+      <div class="shipping-corner left"></div>
+      <div class="shipping-corner right"></div>
+
+      <div class="shipping-label">
+        FIRST CHOICE
+      </div>
+
+      <div class="shipping-doors"></div>
+
+    </div>
+
+
+    <div class="shipping-container two">
+
+      <div class="shipping-corner left"></div>
+      <div class="shipping-corner right"></div>
+
+      <div class="shipping-label">
+        CONTAINERS
+      </div>
+
+      <div class="shipping-doors"></div>
+
+    </div>
+
+
+    <div class="shipping-container three">
+
+      <div class="shipping-corner left"></div>
+      <div class="shipping-corner right"></div>
+
+      <div class="shipping-label">
+        FCC
+      </div>
+
+      <div class="shipping-doors"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       Loading screen
+       Original functionality preserved
+       ======================================================= -->
+
   <div id="loading">
+
     <div>
+
       <div class="company">
         <span class="first-choice">First Choice</span>
         <span class="containers">Containers</span>
       </div>
-      <div class="loading-text">Loading Quote Builder v0.0.01</div>
+
+      <div class="loading-text">
+        Loading Quote Builder v0.0.01
+      </div>
+
     </div>
+
   </div>
+
+
+  <!-- =======================================================
+       Error screen
+       ======================================================= -->
 
   <div id="errorScreen">
+
     <div class="error-card">
+
       <div class="error-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+          />
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+
       </div>
-      <div class="error-title">Couldn't open Quote Builder</div>
-      <div class="error-subtitle">This usually happens when more than one Google account is signed in on this browser. Try these in order:</div>
+
+
+      <div class="error-title">
+        Couldn't open Quote Builder
+      </div>
+
+
+      <div class="error-subtitle">
+        This usually happens when more than one Google account is signed in
+        on this browser. Try these in order:
+      </div>
+
 
       <div class="step-list">
+
+        <!-- Step 1 -->
         <div class="step-card">
-          <div class="step-num">1</div>
+
+          <div class="step-num">
+            1
+          </div>
+
           <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <path d="M16 17l5-5-5-5"/>
+              <path d="M21 12H9"/>
+            </svg>
+
           </div>
+
           <div class="step-text">
-            <div class="step-title">Sign out of extra Google accounts</div>
-            <div class="step-detail">Tap your profile picture (top-right of any Google page) &rarr; sign out of every account except your work one &rarr; try the link again.</div>
+
+            <div class="step-title">
+              Sign out of extra Google accounts
+            </div>
+
+            <div class="step-detail">
+              Tap your profile picture (top-right of any Google page)
+              &rarr; sign out of every account except your work one
+              &rarr; try the link again.
+            </div>
+
           </div>
+
         </div>
 
+
+        <!-- Step 2 -->
         <div class="step-card">
-          <div class="step-num">2</div>
+
+          <div class="step-num">
+            2
+          </div>
+
           <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z"/></svg>
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path
+                d="M12 2a15.3 15.3 0 0 1 0 20
+                   15.3 15.3 0 0 1 0-20z"
+              />
+            </svg>
+
           </div>
+
           <div class="step-text">
-            <div class="step-title">Or use an Incognito window</div>
-            <div class="step-detail">Chrome menu (&#8942;) &rarr; <strong>New Incognito Window</strong> &rarr; paste this link &rarr; sign in with only your work account.</div>
+
+            <div class="step-title">
+              Or use an Incognito window
+            </div>
+
+            <div class="step-detail">
+              Chrome menu (&#8942;) &rarr;
+              <strong>New Incognito Window</strong>
+              &rarr; paste this link &rarr; sign in with only your work account.
+            </div>
+
           </div>
+
         </div>
 
+
+        <!-- Step 3 -->
         <div class="step-card">
-          <div class="step-num">3</div>
+
+          <div class="step-num">
+            3
+          </div>
+
           <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="7" r="1" fill="currentColor" stroke="none"/><circle cx="17" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="16" r="1" fill="currentColor" stroke="none"/></svg>
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+
+              <circle
+                cx="8.5"
+                cy="8.5"
+                r="1.5"
+                fill="currentColor"
+                stroke="none"
+              />
+
+              <circle
+                cx="15"
+                cy="7"
+                r="1"
+                fill="currentColor"
+                stroke="none"
+              />
+
+              <circle
+                cx="17"
+                cy="13"
+                r="1"
+                fill="currentColor"
+                stroke="none"
+              />
+
+              <circle
+                cx="9"
+                cy="16"
+                r="1"
+                fill="currentColor"
+                stroke="none"
+              />
+            </svg>
+
           </div>
+
           <div class="step-text">
-            <div class="step-title">Still stuck? Clear Google's cookies</div>
-            <div class="step-detail">Chrome Settings &rarr; Privacy and Security &rarr; Cookies &rarr; "See all site data" &rarr; search <strong>google.com</strong> &rarr; Remove &rarr; sign back in. This signs you out of Gmail too.</div>
+
+            <div class="step-title">
+              Still stuck? Clear Google's cookies
+            </div>
+
+            <div class="step-detail">
+              Chrome Settings &rarr; Privacy and Security &rarr; Cookies
+              &rarr; "See all site data" &rarr; search
+              <strong>google.com</strong> &rarr; Remove &rarr; sign back in.
+              This signs you out of Gmail too.
+            </div>
+
           </div>
+
         </div>
+
       </div>
+
 
       <div class="error-actions">
-        <button type="button" class="error-btn" onclick="retryLoad()">Try Again</button>
+
+        <button
+          type="button"
+          class="error-btn"
+          onclick="retryLoad()"
+        >
+          Try Again
+        </button>
+
       </div>
+
     </div>
+
   </div>
 
-  <iframe id="appFrame" allow="clipboard-write" title="First Choice Containers"></iframe>
+
+  <!-- =======================================================
+       ORIGINAL APP FRAME
+       ======================================================= -->
+
+  <iframe
+    id="appFrame"
+    allow="clipboard-write"
+    title="First Choice Containers"
+  ></iframe>
+
+
+  <!-- =======================================================
+       ORIGINAL JAVASCRIPT
+       DO NOT CHANGE
+       ======================================================= -->
 
   <script>
     (function () {
