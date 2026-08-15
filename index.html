@@ -1,91 +1,48 @@
 <script>
-
-  var APP_URL =
-    "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec";
-
   var appFrame = document.getElementById("appFrame");
   var loading = document.getElementById("loading");
   var errorScreen = document.getElementById("errorScreen");
 
-  var connectionTimer = null;
-  var appLoaded = false;
+  var loaded = false;
+  var timer;
 
 
   /* =========================
-     GOOGLE APP READY
+     APP LOADED
      ========================= */
 
-  window.addEventListener("message", function(event) {
+  appFrame.addEventListener("load", function () {
 
-    if (event.data === "FIRST_CHOICE_APP_READY") {
+    loaded = true;
 
-      appLoaded = true;
-
-      clearTimeout(connectionTimer);
-
-      hideLoading();
-    }
-
-  });
-
-
-  /* =========================
-     IFRAME LOADED
-     ========================= */
-
-  appFrame.addEventListener("load", function() {
-
-    appLoaded = true;
-
-    clearTimeout(connectionTimer);
-
-    hideLoading();
-
-  });
-
-
-  /* =========================
-     HIDE LOADING
-     ========================= */
-
-  function hideLoading() {
-
-    if (errorScreen) {
-      errorScreen.style.display = "none";
-    }
+    clearTimeout(timer);
 
     loading.classList.add("hide");
 
-    setTimeout(function() {
+    setTimeout(function () {
       loading.style.display = "none";
     }, 400);
 
-  }
+  });
 
 
   /* =========================
-     CONNECTION TIMEOUT
+     FALLBACK ERROR
      ========================= */
 
-  function startConnectionTimer() {
+  timer = setTimeout(function () {
 
-    clearTimeout(connectionTimer);
+    if (!loaded) {
 
-    connectionTimer = setTimeout(function() {
+      loading.style.display = "none";
 
-      if (!appLoaded) {
+      appFrame.style.display = "none";
 
-        appFrame.style.display = "none";
+      errorScreen.style.display = "flex";
 
-        loading.style.display = "none";
+    }
 
-        errorScreen.style.display = "flex";
-
-      }
-
-    }, 20000);
-
-  }
+  }, 30000);
 
 
   /* =========================
@@ -94,29 +51,34 @@
 
   function retryApp() {
 
-    appLoaded = false;
+    loaded = false;
 
-    clearTimeout(connectionTimer);
+    clearTimeout(timer);
 
     errorScreen.style.display = "none";
+
+    appFrame.style.display = "block";
 
     loading.style.display = "flex";
     loading.classList.remove("hide");
 
-    appFrame.style.display = "block";
-
     appFrame.src =
-      APP_URL + "?retry=" + Date.now();
+      "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec?retry=" +
+      Date.now();
 
-    startConnectionTimer();
+    timer = setTimeout(function () {
+
+      if (!loaded) {
+
+        loading.style.display = "none";
+
+        appFrame.style.display = "none";
+
+        errorScreen.style.display = "flex";
+
+      }
+
+    }, 30000);
 
   }
-
-
-  /* =========================
-     START
-     ========================= */
-
-  startConnectionTimer();
-
 </script>
