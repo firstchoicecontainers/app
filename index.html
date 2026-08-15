@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <title>First Choice Containers App</title>
+  <title>First Choice Containers</title>
 
   <style>
     * {
@@ -30,6 +30,7 @@
       inset: 0;
       width: 100%;
       height: 100dvh;
+
       padding:
         env(safe-area-inset-top)
         env(safe-area-inset-right)
@@ -53,6 +54,7 @@
       width: 100%;
       height: 100%;
       min-height: 100%;
+
       border: 0;
       margin: 0;
       padding: 0;
@@ -62,91 +64,85 @@
        LOADING SCREEN
        ========================= */
 
-    .loading-screen {
+    #loading {
       position: fixed;
       inset: 0;
-      z-index: 999999;
 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      width: 100%;
+      height: 100dvh;
 
       background: #ffffff;
 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 999999;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      opacity: 1;
+      visibility: visible;
+
       transition:
-        opacity 0.35s ease,
-        visibility 0.35s ease;
+        opacity 0.4s ease,
+        visibility 0.4s ease;
     }
 
-    .loading-screen.hidden {
+    #loading.hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
 
-    .loading-title {
-      margin: 0 0 8px 0;
+    /* =========================
+       COMPANY NAME
+       ========================= */
 
-      font-family: Arial, sans-serif;
-      font-size: 20px;
-      font-weight: 600;
-
-      color: #222;
+    .company-name {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
       text-align: center;
+      line-height: 1.2;
     }
 
-    .loading-subtitle {
-      margin: 0 0 22px 0;
+    .first-choice {
+      color: #0b1f4d;
+    }
 
-      font-family: Arial, sans-serif;
+    .containers {
+      color: #d71920;
+    }
+
+    /* =========================
+       LOADING TEXT
+       ========================= */
+
+    .loading-text {
+      margin-top: 10px;
+
       font-size: 13px;
       font-weight: 400;
 
       color: #777;
+
       text-align: center;
-    }
-
-    /* Spinner */
-
-    .spinner {
-      width: 34px;
-      height: 34px;
-
-      border: 3px solid #e5e5e5;
-      border-top: 3px solid #333;
-
-      border-radius: 50%;
-
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
     }
 
     /* =========================
        MOBILE
-       Slightly zoomed out
        ========================= */
 
     @media (max-width: 768px) {
 
       body {
         height: 100dvh;
-        overflow: hidden;
       }
 
       .app-container {
         width: 100%;
         height: 100dvh;
-        overflow: hidden;
       }
 
       iframe {
@@ -158,19 +154,12 @@
         transform-origin: top left;
       }
 
-      .loading-title {
-        font-size: 18px;
+      .company-name {
+        font-size: 21px;
       }
 
-      .loading-subtitle {
+      .loading-text {
         font-size: 12px;
-        margin-bottom: 20px;
-      }
-
-      .spinner {
-        width: 30px;
-        height: 30px;
-        border-width: 3px;
       }
     }
 
@@ -189,8 +178,12 @@
         transform-origin: top left;
       }
 
-      .loading-title {
-        font-size: 17px;
+      .company-name {
+        font-size: 19px;
+      }
+
+      .loading-text {
+        font-size: 11px;
       }
     }
   </style>
@@ -202,17 +195,20 @@
        LOADING SCREEN
        ========================= -->
 
-  <div class="loading-screen" id="loadingScreen">
+  <div id="loading">
 
-    <h1 class="loading-title">
-      First Choice Containers
-    </h1>
+    <div>
 
-    <p class="loading-subtitle">
-      Loading Quote Builder...
-    </p>
+      <div class="company-name">
+        <span class="first-choice">First Choice</span>
+        <span class="containers">Containers</span>
+      </div>
 
-    <div class="spinner"></div>
+      <div class="loading-text">
+        Loading Quote Builder...
+      </div>
+
+    </div>
 
   </div>
 
@@ -234,37 +230,21 @@
   </div>
 
 
+  <!-- =========================
+       LOADING SCRIPT
+       ========================= -->
+
   <script>
+    var frame = document.getElementById("appFrame");
+    var loading = document.getElementById("loading");
 
-    const iframe = document.getElementById("appFrame");
-    const loadingScreen = document.getElementById("loadingScreen");
-
-    /*
-      Hide loading screen when
-      Google Apps Script finishes loading.
-    */
-
-    iframe.addEventListener("load", function () {
+    frame.onload = function () {
 
       setTimeout(function () {
-        loadingScreen.classList.add("hidden");
-      }, 300);
+        loading.classList.add("hidden");
+      }, 400);
 
-    });
-
-
-    /*
-      Safety fallback.
-
-      If the iframe doesn't trigger the load
-      event for some reason, don't leave the
-      user stuck on the loading screen forever.
-    */
-
-    setTimeout(function () {
-      loadingScreen.classList.add("hidden");
-    }, 15000);
-
+    };
   </script>
 
 </body>
