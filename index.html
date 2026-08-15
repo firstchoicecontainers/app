@@ -37,10 +37,6 @@
         env(safe-area-inset-left);
     }
 
-    /* =========================
-       APP CONTAINER
-       ========================= */
-
     .app-container {
       width: 100%;
       height: 100%;
@@ -62,56 +58,50 @@
        LOADING SCREEN
        ========================= */
 
-    .loading-screen {
+    #loading {
       position: fixed;
-      inset: 0;
-      z-index: 999999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100dvh;
+
+      background: #ffffff;
 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
-      background: #ffffff;
+      z-index: 999999;
 
-      transition:
-        opacity 0.35s ease,
-        visibility 0.35s ease;
+      font-family: Arial, sans-serif;
+
+      transition: opacity 0.3s ease;
     }
 
-    .loading-screen.hidden {
+    #loading.hidden {
       opacity: 0;
-      visibility: hidden;
       pointer-events: none;
     }
 
     .loading-title {
-      margin: 0 0 8px 0;
-
-      font-family: Arial, sans-serif;
       font-size: 20px;
       font-weight: 600;
-
       color: #222;
+      margin-bottom: 8px;
       text-align: center;
     }
 
-    .loading-subtitle {
-      margin: 0 0 22px 0;
-
-      font-family: Arial, sans-serif;
+    .loading-text {
       font-size: 13px;
-      font-weight: 400;
-
       color: #777;
+      margin-bottom: 20px;
       text-align: center;
     }
-
-    /* Spinner */
 
     .spinner {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
 
       border: 3px solid #e5e5e5;
       border-top: 3px solid #333;
@@ -122,31 +112,24 @@
     }
 
     @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
+      100% {
         transform: rotate(360deg);
       }
     }
 
     /* =========================
        MOBILE
-       Slightly zoomed out
        ========================= */
 
     @media (max-width: 768px) {
 
       body {
         height: 100dvh;
-        overflow: hidden;
       }
 
       .app-container {
         width: 100%;
         height: 100dvh;
-        overflow: hidden;
       }
 
       iframe {
@@ -162,20 +145,13 @@
         font-size: 18px;
       }
 
-      .loading-subtitle {
+      .loading-text {
         font-size: 12px;
-        margin-bottom: 20px;
-      }
-
-      .spinner {
-        width: 30px;
-        height: 30px;
-        border-width: 3px;
       }
     }
 
     /* =========================
-       VERY SMALL PHONES
+       SMALL PHONES
        ========================= */
 
     @media (max-width: 480px) {
@@ -198,73 +174,44 @@
 
 <body>
 
-  <!-- =========================
-       LOADING SCREEN
-       ========================= -->
+  <!-- Loading Screen -->
+  <div id="loading">
 
-  <div class="loading-screen" id="loadingScreen">
-
-    <h1 class="loading-title">
+    <div class="loading-title">
       First Choice Containers
-    </h1>
+    </div>
 
-    <p class="loading-subtitle">
+    <div class="loading-text">
       Loading Quote Builder...
-    </p>
+    </div>
 
     <div class="spinner"></div>
 
   </div>
 
 
-  <!-- =========================
-       APPLICATION
-       ========================= -->
-
+  <!-- Application -->
   <div class="app-container">
 
     <iframe
       id="appFrame"
       src="https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec"
       allow="clipboard-write"
-      title="First Choice Containers - Quote Builder"
-      loading="eager">
+      title="First Choice Containers - Quote Builder">
     </iframe>
 
   </div>
 
 
   <script>
+    var frame = document.getElementById("appFrame");
+    var loading = document.getElementById("loading");
 
-    const iframe = document.getElementById("appFrame");
-    const loadingScreen = document.getElementById("loadingScreen");
-
-    /*
-      Hide loading screen when
-      Google Apps Script finishes loading.
-    */
-
-    iframe.addEventListener("load", function () {
-
-      setTimeout(function () {
-        loadingScreen.classList.add("hidden");
-      }, 300);
-
-    });
-
-
-    /*
-      Safety fallback.
-
-      If the iframe doesn't trigger the load
-      event for some reason, don't leave the
-      user stuck on the loading screen forever.
-    */
-
-    setTimeout(function () {
-      loadingScreen.classList.add("hidden");
-    }, 15000);
-
+    frame.onload = function() {
+      setTimeout(function() {
+        loading.classList.add("hidden");
+      }, 500);
+    };
   </script>
 
 </body>
