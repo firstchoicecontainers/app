@@ -95,21 +95,21 @@
 
     /* =========================================================
        REAL SHIPPING-CONTAINER PHOTO BACKDROP
-       Photo: "Steel Container on Container Dock" by freestocks.org
-       Source: pexels.com/photo/122164 — Pexels License (free to use)
+       Photo: "Orange corrugated metal facade and blue sky" by Jan van der Wolf
+       Source: pexels.com/photo/19574416 — Pexels License (free to use)
        ========================================================= */
 
     .shipping-photo {
       position: absolute;
-      inset: -20px;
+      inset: 0;
 
-      background-image: url('https://images.pexels.com/photos/122164/pexels-photo-122164.jpeg?auto=compress&cs=tinysrgb&w=1920');
+      background-image: url('https://images.pexels.com/photos/19574416/pexels-photo-19574416.jpeg?auto=compress&cs=tinysrgb&w=1920');
       background-size: cover;
-      background-position: center 62%;
+      background-position: center;
       background-repeat: no-repeat;
 
       opacity: 0.55;
-      filter: saturate(0.9) contrast(1.02) blur(6px);
+      filter: saturate(0.85) contrast(1.03);
     }
 
     /* Washes the photo into the white corporate palette so it stays
@@ -434,7 +434,7 @@
     @media (max-width: 600px) {
 
       .shipping-photo {
-        background-position: center 50%;
+        background-position: center;
         opacity: 0.4;
       }
 
