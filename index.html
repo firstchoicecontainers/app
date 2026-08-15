@@ -35,20 +35,44 @@
 
     /* ---------- Error screen ---------- */
     #errorScreen {
-      display: none; position: fixed; inset: 0; background: #fff; z-index: 999998;
-      align-items: center; justify-content: center; padding: 24px;
+      display: none; position: fixed; inset: 0; background: #f7f9fb; z-index: 999998;
+      align-items: flex-start; justify-content: center; padding: 32px 20px;
+      overflow-y: auto;
     }
     #errorScreen.show { display: flex; }
-    .error-card { max-width: 440px; text-align: center; }
-    .error-icon { font-size: 40px; margin-bottom: 12px; }
-    .error-title { font-size: 18px; font-weight: 800; color: #0B1F4D; margin-bottom: 10px; }
-    .error-body { font-size: 14px; color: #444; line-height: 1.6; margin-bottom: 20px; text-align: left; }
-    .error-body ol { margin: 8px 0 0; padding-left: 20px; }
-    .error-body li { margin-bottom: 6px; }
+    .error-card { max-width: 520px; width: 100%; text-align: center; }
+    .error-icon-wrap {
+      width: 56px; height: 56px; border-radius: 50%; background: #fef2f2;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;
+    }
+    .error-icon-wrap svg { width: 28px; height: 28px; color: #D71920; }
+    .error-title { font-size: 19px; font-weight: 800; color: #0B1F4D; margin-bottom: 6px; }
+    .error-subtitle { font-size: 13.5px; color: #6b7686; margin-bottom: 26px; line-height: 1.5; }
+
+    .step-list { display: flex; flex-direction: column; gap: 12px; text-align: left; margin-bottom: 22px; }
+    .step-card {
+      display: flex; align-items: flex-start; gap: 14px; background: #fff;
+      border: 1.5px solid #e1e6ec; border-radius: 12px; padding: 14px 16px;
+    }
+    .step-num {
+      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: #0B1F4D;
+      color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center;
+      justify-content: center;
+    }
+    .step-icon {
+      flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px; background: #eaf1f8;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-icon svg { width: 18px; height: 18px; color: #0B1F4D; }
+    .step-text { min-width: 0; }
+    .step-title { font-size: 14.5px; font-weight: 700; color: #16202e; margin-bottom: 2px; }
+    .step-detail { font-size: 12.5px; color: #6b7686; line-height: 1.5; }
+    .step-detail strong { color: #16202e; }
+
     .error-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .error-btn {
       background: #0B1F4D; color: #fff; border: none; border-radius: 8px;
-      padding: 12px 20px; font-size: 14px; font-weight: 700; cursor: pointer;
+      padding: 13px 24px; font-size: 14px; font-weight: 700; cursor: pointer;
     }
     .error-btn.secondary { background: #f0f0f0; color: #0B1F4D; }
 
@@ -74,16 +98,47 @@
 
   <div id="errorScreen">
     <div class="error-card">
-      <div class="error-icon">⚠️</div>
-      <div class="error-title">Couldn't open Quote Builder</div>
-      <div class="error-body">
-        This usually happens when you're signed into more than one Google account in this browser. Try one of these, in order:
-        <ol>
-          <li>Log out of every Google account except your work one, then try again.</li>
-          <li>Or open this link in an <strong>Incognito window</strong> and sign in with just your work account.</li>
-          <li>If that still doesn't work, clear Google's cookies: Chrome Settings &rarr; Privacy and Security &rarr; Cookies &rarr; "See all site data" &rarr; search <strong>google.com</strong> &rarr; remove, then sign back in.</li>
-        </ol>
+      <div class="error-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
+      <div class="error-title">Couldn't open Quote Builder</div>
+      <div class="error-subtitle">This usually happens when more than one Google account is signed in on this browser. Try these in order:</div>
+
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+          </div>
+          <div class="step-text">
+            <div class="step-title">Sign out of extra Google accounts</div>
+            <div class="step-detail">Tap your profile picture (top-right of any Google page) &rarr; sign out of every account except your work one &rarr; try the link again.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z"/></svg>
+          </div>
+          <div class="step-text">
+            <div class="step-title">Or use an Incognito window</div>
+            <div class="step-detail">Chrome menu (&#8942;) &rarr; <strong>New Incognito Window</strong> &rarr; paste this link &rarr; sign in with only your work account.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="7" r="1" fill="currentColor" stroke="none"/><circle cx="17" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="16" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="step-text">
+            <div class="step-title">Still stuck? Clear Google's cookies</div>
+            <div class="step-detail">Chrome Settings &rarr; Privacy and Security &rarr; Cookies &rarr; "See all site data" &rarr; search <strong>google.com</strong> &rarr; Remove &rarr; sign back in. This signs you out of Gmail too.</div>
+          </div>
+        </div>
+      </div>
+
       <div class="error-actions">
         <button type="button" class="error-btn" onclick="retryLoad()">Try Again</button>
       </div>
