@@ -86,70 +86,6 @@
     }
 
     /* =========================
-       CONNECTION PROBLEM
-       ========================= */
-
-    #errorScreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      background: #fff;
-
-      display: none;
-      align-items: center;
-      justify-content: center;
-
-      z-index: 1000000;
-
-      font-family: Arial, sans-serif;
-    }
-
-    .error-content {
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-    }
-
-    .error-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: #0B1F4D;
-      margin-bottom: 10px;
-    }
-
-    .error-message {
-      font-size: 14px;
-      line-height: 1.5;
-      color: #666;
-      margin-bottom: 22px;
-    }
-
-    .retry-button {
-      border: 0;
-      border-radius: 7px;
-
-      padding: 11px 28px;
-
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-
-      color: #fff;
-      background: #0B1F4D;
-
-      cursor: pointer;
-
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .retry-button:active {
-      transform: scale(0.97);
-    }
-
-    /* =========================
        APP
        ========================= */
 
@@ -192,14 +128,6 @@
       .loading-text {
         font-size: 12px;
       }
-
-      .error-title {
-        font-size: 20px;
-      }
-
-      .error-message {
-        font-size: 13px;
-      }
     }
 
     /* =========================
@@ -231,7 +159,6 @@
 <body>
 
   <!-- Loading screen -->
-
   <div id="loading">
 
     <div class="loading-content">
@@ -250,35 +177,7 @@
   </div>
 
 
-  <!-- Connection Problem -->
-
-  <div id="errorScreen">
-
-    <div class="error-content">
-
-      <div class="error-title">
-        Connection Problem
-      </div>
-
-      <div class="error-message">
-        We couldn't connect to Quote Builder.<br>
-        Please check your internet connection and try again.
-      </div>
-
-      <button
-        type="button"
-        class="retry-button"
-        onclick="retryApp()">
-        Retry
-      </button>
-
-    </div>
-
-  </div>
-
-
   <!-- Application -->
-
   <div class="app-container">
 
     <iframe
@@ -292,91 +191,16 @@
 
 
   <script>
-
     var appFrame = document.getElementById("appFrame");
     var loading = document.getElementById("loading");
-    var errorScreen = document.getElementById("errorScreen");
-
-    var connectionTimer = null;
-    var appLoaded = false;
-
-
-    /* =========================
-       APP LOADED
-       ========================= */
 
     appFrame.onload = function () {
-
-      appLoaded = true;
-
-      clearTimeout(connectionTimer);
-
       loading.classList.add("hide");
 
       setTimeout(function () {
         loading.style.display = "none";
       }, 400);
-
     };
-
-
-    /* =========================
-       CONNECTION CHECK
-       ========================= */
-
-    connectionTimer = setTimeout(function () {
-
-      if (!appLoaded) {
-
-        appFrame.style.display = "none";
-
-        loading.style.display = "none";
-
-        errorScreen.style.display = "flex";
-
-      }
-
-    }, 15000);
-
-
-    /* =========================
-       RETRY
-       ========================= */
-
-    function retryApp() {
-
-      appLoaded = false;
-
-      clearTimeout(connectionTimer);
-
-      errorScreen.style.display = "none";
-
-      loading.style.display = "flex";
-      loading.classList.remove("hide");
-
-      appFrame.style.display = "block";
-
-      appFrame.src =
-        "https://script.google.com/macros/s/AKfycbzrgdfX9R9F_duC0a8kH7DM6gMIK1UA9t392KIykDzN7eY_HnRXRsjDdjJ7p82Rp62vOg/exec?retry=" +
-        Date.now();
-
-
-      connectionTimer = setTimeout(function () {
-
-        if (!appLoaded) {
-
-          appFrame.style.display = "none";
-
-          loading.style.display = "none";
-
-          errorScreen.style.display = "flex";
-
-        }
-
-      }, 15000);
-
-    }
-
   </script>
 
 </body>
