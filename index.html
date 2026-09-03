@@ -840,11 +840,17 @@
       }
 
       function onMessage(event) {
-        if (event.data && event.data.type === 'fcc-app-ready') {
+        if (!event.data) return;
+        if (event.data.type === 'fcc-app-ready') {
           readyReceived = true;
           clearTimeout(timeoutHandle);
           clearTimeout(softHandle);
           showApp();
+          return;
+        }
+        if (event.data.type === 'fcc-switch-app' && event.data.app && isLinked(event.data.app)) {
+          if (event.data.app !== currentApp) openApp(event.data.app);
+          return;
         }
       }
 
