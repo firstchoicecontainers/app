@@ -502,6 +502,7 @@
     .app-card-icon svg { width: 24px; height: 24px; color: #fff; }
     .app-card-name { flex: 1; min-width: 0; font-size: 17px; font-weight: 800; }
     .app-card-chev { color: rgba(255, 255, 255, 0.5); font-size: 22px; flex-shrink: 0; }
+    .app-card-badge { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; background: rgba(255, 255, 255, 0.16); color: rgba(255, 255, 255, 0.85); vertical-align: middle; }
     .launcher-note { margin-top: 14px; font-size: 11.5px; color: #ff8a8f; min-height: 16px; }
   </style>
 </head>
@@ -560,7 +561,7 @@
           <span class="app-card-name">Quote Builder</span>
           <span class="app-card-chev">&rsaquo;</span>
         </button>
-        <button type="button" class="app-card" id="cardSaleshub" onclick="openApp('saleshub')">
+        <button type="button" class="app-card disabled" id="cardSaleshub" onclick="openApp('saleshub')">
           <span class="app-card-icon alt">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="4" y="2" width="16" height="20" rx="2"/>
@@ -568,7 +569,7 @@
               <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
             </svg>
           </span>
-          <span class="app-card-name">SalesHub</span>
+          <span class="app-card-name">SalesHub <span class="app-card-badge">Coming Soon</span></span>
           <span class="app-card-chev">&rsaquo;</span>
         </button>
       </div>
@@ -802,12 +803,19 @@
         saleshub: 'https://script.google.com/macros/s/AKfycbwcvkFhYWoeDw_5tXPXvUOegWxGRByyPshyiQ14Ed5IZAQp0kCNrLolH80DvpJvaCAF/exec'
       };
 
+      // SalesHub temporarily disabled (per request) - the card shows a
+      // "Coming Soon" badge and stays inert. Its real URL above is left
+      // untouched; flipping this back to true re-enables it with no other
+      // changes needed (isLinked/openApp below already gate on it).
+      var SALESHUB_ENABLED = false;
+
       var currentApp = null;
       var readyReceived = false;
       var timeoutHandle = null;
       var softHandle = null;
 
       function isLinked(key) {
+        if (key === 'saleshub' && !SALESHUB_ENABLED) return false;
         var u = APPS[key];
         return !!u && u.indexOf('PUT_') !== 0;
       }
@@ -892,7 +900,7 @@
 
       function openApp(key) {
         if (!isLinked(key)) {
-          if (noteEl) noteEl.textContent = 'SalesHub is not linked yet.';
+          if (noteEl) noteEl.textContent = (key === 'saleshub') ? 'SalesHub is coming soon.' : 'That app is not linked yet.';
           return;
         }
         currentApp = key;
