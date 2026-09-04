@@ -871,16 +871,24 @@
         }, TIMEOUT_MS);
       }
 
-      function onFrameLoad() {
-        if (currentApp !== 'saleshub') return;
-        clearTimeout(softHandle);
-        softHandle = setTimeout(function () {
-          if (!readyReceived && !frame.classList.contains('show')) {
-            clearTimeout(timeoutHandle);
-            showApp();
-          }
-        }, SOFT_REVEAL_MS);
-      }
+      // SalesHub used to get a "soft reveal" here - unconditionally showing
+      // its iframe SOFT_REVEAL_MS after the browser's own native load event
+      // fired, without waiting for SalesHub's own fcc-app-ready postMessage.
+      // That was a workaround from before SalesHub's page-weight fix
+      // (2026-09-04 - see SalesHub's own CLAUDE.md/Code.gs: its Admin Panel
+      // used to unconditionally load ~250KB of every tab's HTML/CSS/JS on
+      // every visit, slow enough to occasionally miss signaling ready in
+      // time). It had a real cost: this always beat the TIMEOUT_MS hard
+      // timeout below, so it force-revealed whatever was sitting in the
+      // iframe - including Google's own raw error page during a multi-
+      // account routing failure, exactly the case the error screen below
+      // exists to catch, which meant that screen could never actually show
+      // for SalesHub (2026-09-04, per request). SalesHub's Index.html
+      // reliably calls notifyAppReady() now (immediately at script-eval
+      // time, on DOMContentLoaded, and on window.load - see notifyAppReady
+      // in Index.html), so it no longer needs a fallback reveal: both apps
+      // now share the exact same fcc-app-ready + TIMEOUT_MS flow.
+      function onFrameLoad() {}
 
       function openApp(key) {
         if (!isLinked(key)) {
