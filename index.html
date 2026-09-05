@@ -561,7 +561,7 @@
           <span class="app-card-name">Quote Builder</span>
           <span class="app-card-chev">&rsaquo;</span>
         </button>
-        <button type="button" class="app-card disabled" id="cardSaleshub" onclick="openApp('saleshub')">
+        <button type="button" class="app-card" id="cardSaleshub" onclick="openApp('saleshub')">
           <span class="app-card-icon alt">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="4" y="2" width="16" height="20" rx="2"/>
@@ -803,11 +803,12 @@
         saleshub: 'https://script.google.com/macros/s/AKfycbwcvkFhYWoeDw_5tXPXvUOegWxGRByyPshyiQ14Ed5IZAQp0kCNrLolH80DvpJvaCAF/exec'
       };
 
-      // SalesHub temporarily disabled (per request) - the card shows a
-      // "Coming Soon" badge and stays inert. Its real URL above is left
-      // untouched; flipping this back to true re-enables it with no other
-      // changes needed (isLinked/openApp below already gate on it).
-      var SALESHUB_ENABLED = false;
+      // SalesHub re-enabled (per request) - access works normally again.
+      // The "Coming Soon" badge on the card stays as a purely cosmetic
+      // label (see the app-card-badge span below) even though the app
+      // itself is fully reachable now; flip this back to false to disable
+      // access again without touching the badge markup.
+      var SALESHUB_ENABLED = true;
 
       var currentApp = null;
       var readyReceived = false;
