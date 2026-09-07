@@ -502,7 +502,6 @@
     .app-card-icon svg { width: 24px; height: 24px; color: #fff; }
     .app-card-name { flex: 1; min-width: 0; font-size: 17px; font-weight: 800; }
     .app-card-chev { color: rgba(255, 255, 255, 0.5); font-size: 22px; flex-shrink: 0; }
-    .app-card-badge { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; background: rgba(255, 255, 255, 0.16); color: rgba(255, 255, 255, 0.85); vertical-align: middle; }
     .launcher-note { margin-top: 14px; font-size: 11.5px; color: #ff8a8f; min-height: 16px; }
   </style>
 </head>
@@ -569,7 +568,7 @@
               <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
             </svg>
           </span>
-          <span class="app-card-name">SalesHub <span class="app-card-badge">Coming Soon</span></span>
+          <span class="app-card-name">SalesHub</span>
           <span class="app-card-chev">&rsaquo;</span>
         </button>
       </div>
@@ -812,11 +811,10 @@
         saleshub: 'https://script.google.com/macros/s/AKfycbwcvkFhYWoeDw_5tXPXvUOegWxGRByyPshyiQ14Ed5IZAQp0kCNrLolH80DvpJvaCAF/exec'
       };
 
-      // SalesHub re-enabled (per request) - access works normally again.
-      // The "Coming Soon" badge on the card stays as a purely cosmetic
-      // label (see the app-card-badge span below) even though the app
-      // itself is fully reachable now; flip this back to false to disable
-      // access again without touching the badge markup.
+      // SalesHub is fully enabled - the card's "Coming Soon" badge was
+      // removed once the app itself became fully reachable. Flip this to
+      // false to disable access again (openApp falls back to the
+      // 'SalesHub is coming soon.' note below in that case).
       var SALESHUB_ENABLED = true;
 
       var currentApp = null;
