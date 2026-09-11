@@ -113,7 +113,6 @@
       );
     }
 
-    /* Corporate accent glows */
     .shipping-red-glow {
       position: absolute;
 
@@ -794,15 +793,6 @@
 
       var params = new URLSearchParams(window.location.search);
       var authuser = params.get('authuser') || '0';
-      // Bumped 9000 -> 12000 (per report 2026-09-06: "it goes to this
-      // landing page that has multiple Google accounts, and suddenly it
-      // disappears" - the account-chooser interstitial Google shows during
-      // a multi-account routing detour was taking long enough that this
-      // hard timeout fired first and swapped it for the wrapper's own
-      // error screen, right before the real app would otherwise have
-      // finished loading and sent its own fcc-app-ready signal). This
-      // timeout only ever matters when that signal is late/never arrives -
-      // it does not add delay to a normal, already-fast load.
       var TIMEOUT_MS = 12000;
       var SOFT_REVEAL_MS = 2500;
 
@@ -811,10 +801,6 @@
         saleshub: 'https://script.google.com/macros/s/AKfycbwcvkFhYWoeDw_5tXPXvUOegWxGRByyPshyiQ14Ed5IZAQp0kCNrLolH80DvpJvaCAF/exec'
       };
 
-      // SalesHub is fully enabled - the card's "Coming Soon" badge was
-      // removed once the app itself became fully reachable. Flip this to
-      // false to disable access again (openApp falls back to the
-      // 'SalesHub is coming soon.' note below in that case).
       var SALESHUB_ENABLED = true;
 
       var currentApp = null;
@@ -887,23 +873,6 @@
         }, TIMEOUT_MS);
       }
 
-      // SalesHub used to get a "soft reveal" here - unconditionally showing
-      // its iframe SOFT_REVEAL_MS after the browser's own native load event
-      // fired, without waiting for SalesHub's own fcc-app-ready postMessage.
-      // That was a workaround from before SalesHub's page-weight fix
-      // (2026-09-04 - see SalesHub's own CLAUDE.md/Code.gs: its Admin Panel
-      // used to unconditionally load ~250KB of every tab's HTML/CSS/JS on
-      // every visit, slow enough to occasionally miss signaling ready in
-      // time). It had a real cost: this always beat the TIMEOUT_MS hard
-      // timeout below, so it force-revealed whatever was sitting in the
-      // iframe - including Google's own raw error page during a multi-
-      // account routing failure, exactly the case the error screen below
-      // exists to catch, which meant that screen could never actually show
-      // for SalesHub (2026-09-04, per request). SalesHub's Index.html
-      // reliably calls notifyAppReady() now (immediately at script-eval
-      // time, on DOMContentLoaded, and on window.load - see notifyAppReady
-      // in Index.html), so it no longer needs a fallback reveal: both apps
-      // now share the exact same fcc-app-ready + TIMEOUT_MS flow.
       function onFrameLoad() {}
 
       function openApp(key) {
